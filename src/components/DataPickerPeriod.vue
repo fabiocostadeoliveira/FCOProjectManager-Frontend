@@ -9,7 +9,6 @@
 
         <div :class="classEndDate">
             <md-datepicker
-                
                 v-model="value.endDate"
                 md-immediately
                 :md-disabled-dates="disableDatesLessThan"
@@ -23,12 +22,16 @@
 </template>
 
 <script>
+
+import {dateUtil} from '../mixins/DateUtils'
+
+
 export default {
     name: 'DataPickerPeriod',
-
+    mixins: [dateUtil],
     data: () => ({
         enabled: false,
-        disableEndDate: false
+        disableEndDate: false,
     }),
 
     props: {
@@ -40,25 +43,12 @@ export default {
 
     methods: {
         
-        disableClick(){
-            console.log('clicou')
-            return false
-        },
-
         disableDatesLessThan(currentDate){
-            /*
-            let dateTime = null
-            try {
-                dateTime = isNaN(this.value.startDate.getTime())
-                
-            } catch (error) {
-                return true
-            }
-            */
             return currentDate < this.value.startDate ? true : false
         },
 
-        isValidtDate(value){
+        /*
+        isValidDate(value){
 
             let time = null
             try {
@@ -69,26 +59,20 @@ export default {
 
             return isNaN(time) ? false : true
         },
+        */
         
-        styleDateDisableToClick(){
-            return {pointerEvents:'none'}
-        },
-
+        
         setUpEndDate(){
-            if (this.value.startDate == undefined 
-                || this.value.startDate == null 
-                || this.isValidtDate(this.value.startDate) == false)
+
+            if (!this.isValidDate(this.value.startDate))
                 this.disableEndDate = true
             else
                 this.disableEndDate = false
-
-            if (this.disableEndDate == false){
-                console.log('disableEndDate')
-                this.value.endDate = null    
-
-            }
             
-        }
+            if (this.disableEndDate == true)
+                this.$set(this.value, 'endDate', null)    
+        },
+        
     },
 
     computed: {
@@ -96,31 +80,17 @@ export default {
         classEndDate(){
             return this.disableEndDate ? 'disablePointer' : ''
         },
-
-        isDisabledEndDate(){
-            let isValidDate = false
-            try {
-                isValidDate = isNaN(this.value.startDate.getTime()) ? true : false    
-            } catch (error) {
-                isValidDate = false
-                return ''
-            }
-            console.log('isValid', isValidDate)
-            return isValidDate ? '' : 'disablePointer'
-        }
-
-
     },
 
     watch: {
-        value:{
+
+        value: {
             handler(){
-                console.log('watch')
                 this.setUpEndDate()
             },
             deep: true
         }
-
+        
     },
     mounted(){
         this.setUpEndDate()

@@ -6,20 +6,51 @@ Vue.use(Vuex)
 export default new Vuex.Store({
 
     state: {
-        
-        isOpenDialogProjectHantle: false
+        isOpenDialogProjectHantle: false,
+        snackbarVisible: false,
+        messageSnackBar: ''
     },
 
 
     mutations: {
         alternateDialogProjectHandle(state){
-            console.log('alternou botao')
+            
             state.isOpenDialogProjectHantle = !state.isOpenDialogProjectHantle
+        },
+
+        setSnackbarVisible(state, payload){
+            state.snackbarVisible = payload
+        },
+
+        setMessageSnackBar(state, payload){
+            state.messageSnackBar = payload
         }
+
     },
 
     getters: {
-        isOpenDialogProjectHantle: state => state.isOpenDialogProjectHantle
+        isOpenDialogProjectHantle: state => state.isOpenDialogProjectHantle,
+        isSnackbarVisible: state => state.snackbarVisible,
+        messageSnackBar: state => state.messageSnackBar
+    },
+
+    actions: {
+
+        showSnackBar({ commit }, messageSnackBar){
+            
+            console.log('dentro da action msg=', messageSnackBar)
+
+            commit('setMessageSnackBar', messageSnackBar)
+            
+            commit('setSnackbarVisible', true)
+
+            setTimeout(()=>{
+                
+                commit('setSnackbarVisible', false)
+                
+                commit('setMessageSnackBar', '')
+            },4000)
+        }
     }
 
     

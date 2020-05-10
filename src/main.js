@@ -9,9 +9,12 @@ import 'vue-material/dist/vue-material.min.css'
 //import 'vue-material/dist/theme/black-green-light.css'
 import 'vue-material/dist/theme/black-green-dark.css'
 import 'material-design-icons/iconfont/material-icons.css'
+import VueMoment from 'vue-moment'
+import moment from 'moment'
 
 import { ConfigAxios } from './functions/ConfigAxios'
 
+Vue.use(VueMoment,{ moment })
 Vue.use(VueMaterial)
 
 Vue.material.locale.dateFormat= 'dd/MM/yyyy'
