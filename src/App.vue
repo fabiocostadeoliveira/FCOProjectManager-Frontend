@@ -1,7 +1,7 @@
 <template>
   <div 
     id="app"
-    class="page-container">
+    >
     
   <md-toolbar class="md-primary">
     
@@ -18,6 +18,13 @@
       class="md-icon-button" 
       to="/">
 				<md-icon id="iconHome">home</md-icon>
+		</md-button>
+
+    <md-button 
+      class="md-icon-button"       
+      @click="showModal()">
+
+				<md-icon id="iconHome">add</md-icon>
 		</md-button>
 
   </md-toolbar>
@@ -54,6 +61,9 @@
 
   </md-drawer>
   
+  
+  <ProjectHandle/>
+  
   <md-content>
 		<router-view></router-view>        
 	</md-content>
@@ -63,15 +73,43 @@
 
 <script>
 
+import ProjectHandle from '../src/components/ProjectHandler'
+import {mapGetters, mapMutations} from 'vuex'
+
 export default {
   name: 'App',
   components: {
-  
+    ProjectHandle
   },
 
   data: () =>({
-    showNavigation: false
-  })
+    showNavigation: false,
+    showModalProjectHandle: false,
+    
+  }),
+
+  methods:{
+
+    ...mapMutations(['alternateDialogProjectHandle']),
+
+    showModal(){
+      this.alternateDialogProjectHandle()
+    }
+
+  },
+
+  computed: {
+    
+    ...mapGetters(['isOpenDialogProjectHantle']),
+
+    disableButtonAddProject(){
+      
+      if (this.$store.getters.isOpenDialogProjectHantle)
+        return true
+      
+      return false
+    }
+  }
 
 
 }

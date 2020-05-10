@@ -14,7 +14,9 @@
     "vue": "^2.6.11",
     "vue-axios": "^2.1.5",
     "vue-material": "^1.0.0-beta-13",
-    "vue-router": "^3.1.6"
+    "vue-router": "^3.1.6",
+    "vuex": "^3.3.0",
+    "vuex-persist": "^2.2.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.3.0",
@@ -38,16 +40,14 @@
     ],
     "parserOptions": {
       "parser": "babel-eslint"
-    },    
-    
+    },
     "rules": {
-      "vue/no-unused-components": "warn",      
+      "vue/no-unused-components": "warn",
       "vue/html-end-tags": "warn",
       "vue/max-attributes-per-line": "warn",
       "vue/mustache-interpolation-spacing": "warn",
       "vue/no-multi-spaces": "warn",
       "vue/no-unused-vars": "warn"
-
     }
   },
   "browserslist": [

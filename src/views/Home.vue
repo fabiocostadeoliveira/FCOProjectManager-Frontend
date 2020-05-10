@@ -1,13 +1,31 @@
 
 
 <template> 
-	<div class="home">
+	<div>
 		<div>
 			<span class="md-title title">Projetos</span>
 		</div>
-		<br/>
-		<div>
+
+		<div
+			id="contentCards" 
+			class="md-layout md-gutter">
+
 			<CardProject/>
+			<CardProject/>
+			<CardProject/>
+			<CardProject/>
+			
+			<!-- <CardProject/>
+			<CardProject/>
+
+			<CardProject/>
+			<CardProject/>
+			<CardProject/>
+
+			<CardProject/>
+			<CardProject/>
+			<CardProject/> -->
+
 		</div>
 		
 	</div>
