@@ -17,18 +17,11 @@
                 <md-input v-model="project.name"></md-input>
             </md-field>
 
-            <md-datepicker 
-                v-model="project.startDate" 
-                md-immediately>
-                <label>Data de Inicio</label>
-            </md-datepicker>
+            <DataPickerPeriod
+                :value="period"
+                />
 
-            <md-datepicker 
-                v-model="project.endDate"
-                md-immediately>
-                <label>Data de Fim</label>
-            </md-datepicker>
-
+            
         </md-dialog-content>
 
         <md-dialog-actions>
@@ -43,12 +36,18 @@
 
 <script>
 
+import DataPickerPeriod from '../components/DataPickerPeriod'
 import {mapGetters, mapMutations} from 'vuex'
 
 export default {
 
+    name: 'ProjectHandle',
+    components: {
+        DataPickerPeriod
+    },
     data: () =>({
-        project: {}
+        project: {},
+        period:{}
     }),
 
     methods: {
