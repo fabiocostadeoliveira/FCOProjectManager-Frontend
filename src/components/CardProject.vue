@@ -3,17 +3,21 @@
         <md-card md-with-hover>
             <md-ripple>
                 <md-card-header>
-                <div class="md-title">Card with hover effect</div>
-                <div class="md-subhead">It also have a ripple</div>
+                <div class="md-title">{{ value.name | mainTitle }}  </div>
+                <div class="md-subhead">Data Inicio: {{ value.startData }}</div>
+                <div class="md-subhead">Data Fim: {{ value.endData }}</div>
                 </md-card-header>
 
                 <md-card-content>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio itaque ea, nostrum odio. Dolores, sed accusantium quasi non.
+                    {{ value.name }}
                 </md-card-content>
 
                 <md-card-actions>
-                <md-button>Tarefas</md-button>                
+                    <md-button>Deletar</md-button>
+                    <md-button>Editar</md-button>
+                    <md-button>Tarefas</md-button>                
                 </md-card-actions>
+
             </md-ripple>
         </md-card>
     </div>    
@@ -22,6 +26,38 @@
 
 <script>
 export default {
+    name:'CardProject',
+    components: {
+
+    },
+
+    data: () =>({
+        
+
+    }),
+
+    props: {
+        value: {
+            type: Object,
+            required: true
+        }
+    },
+
+    filters:{
+    
+        mainTitle(text){
+            if(text === undefined) return ''
+
+            let newText = text.substring(0, 25)
+            
+            if(text.length > 20) 
+                newText += '...'
+
+            return newText
+        },
+
+
+    }
 
 }
 </script>

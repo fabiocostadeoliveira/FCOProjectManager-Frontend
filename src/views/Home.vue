@@ -10,7 +10,8 @@
 			id="contentCards" 
 			class="md-layout md-gutter">
 
-			<CardProject v-for=" (reg) of listProjects " :key="reg.id"/>
+			<CardProject v-for=" (reg) of listProjects " :key="reg.id"
+						:value="reg" />
 
 		</div>
 
@@ -54,6 +55,9 @@ export default {
                 let response = await this.$http.get('/projects')
 
 				this.listProjects = response.data
+
+				console.log('feito o load', this.listProjects)
+
             } catch (error) {
 
 				this.showSnackBar('Falha ao carregar projetos!')
