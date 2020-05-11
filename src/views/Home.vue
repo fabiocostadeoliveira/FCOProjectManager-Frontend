@@ -10,21 +10,7 @@
 			id="contentCards" 
 			class="md-layout md-gutter">
 
-			<CardProject/>
-			<CardProject/>
-			<CardProject/>
-			<CardProject/>
-			
-			<!-- <CardProject/>
-			<CardProject/>
-
-			<CardProject/>
-			<CardProject/>
-			<CardProject/>
-
-			<CardProject/>
-			<CardProject/>
-			<CardProject/> -->
+			<CardProject v-for=" (reg) of listProjects " :key="reg.id"/>
 
 		</div>
 
@@ -32,10 +18,10 @@
 			:md-position="snackBarConfiguration.position" 
 			:md-duration="snackBarConfiguration.duration" 
 			:md-active.sync="isSnackbarVisibleLocal" 
-
 			md-persistent>
+			
 			<span>{{ messageSnackBar }}</span>
-			<!-- <md-button class="md-accent" @click="isSnackbarVisible">Fechar</md-button> -->
+			
 		</md-snackbar>
 		
 	</div>
@@ -52,6 +38,7 @@ export default {
     components:{ CardProject, },
 	data: () =>({
 		isSnackbarVisibleLocal: false,
+		listProjects: [],
 		snackBarConfiguration: {
 			position: 'center',
 			duration: 5000
@@ -59,7 +46,22 @@ export default {
 	}),
 
 	methods: {
-		...mapMutations(['setSnackbarVisible'])
+		...mapMutations(['setSnackbarVisible']),
+
+		async loadProjectFromApi(){
+
+			try {
+                let response = await this.$http.get('/projects')
+
+				this.listProjects = response.data
+            } catch (error) {
+
+				this.showSnackBar('Falha ao carregar projetos!')
+				
+                console.log('Erro ao tentar gravar projeto', error)
+            }
+
+		}
 	},
 	
 	computed: {
@@ -77,6 +79,8 @@ export default {
 	},
 
 	mounted() {
+
+		this.loadProjectFromApi()
 		//this.setSnackbarVisible(true)
 		//this.isSnackbarVisibleLocal = true
 	}
