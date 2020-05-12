@@ -62,7 +62,8 @@
   </md-drawer>
   
   
-  <ProjectHandle/>
+  <ProjectHandle
+    :value="objProject"/>
   
   <md-content>
 		<router-view></router-view>        
@@ -85,6 +86,10 @@ export default {
   data: () =>({
     showNavigation: false,
     showModalProjectHandle: false,
+    objProject: {
+      name: "",
+      period:{startDate: null, endDate: null}
+    }
     
   }),
 
@@ -94,6 +99,16 @@ export default {
 
     showModal(){
       this.alternateDialogProjectHandle()
+    },
+
+    newEmptyProject(){
+      return{
+        name: "",
+        period:{
+          startDate: null,
+          endDate: null
+        }
+      }
     }
 
   },

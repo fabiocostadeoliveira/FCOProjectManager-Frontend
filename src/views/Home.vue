@@ -10,7 +10,7 @@
 			id="contentCards" 
 			class="md-layout md-gutter">
 
-			<CardProject v-for=" (reg) of listProjects " :key="reg.id"
+			<CardProject v-for=" (reg) of mainListProjects " :key="reg.id"
 						:value="reg" />
 
 		</div>
@@ -31,7 +31,7 @@
 <script>
 
 
-import {mapGetters, mapMutations} from 'vuex'
+import {mapGetters, mapMutations, mapActions} from 'vuex'
 import CardProject from '../components/CardProject'
 
 export default {
@@ -49,27 +49,25 @@ export default {
 	methods: {
 		...mapMutations(['setSnackbarVisible']),
 
-		async loadProjectFromApi(){
+		...mapActions(['loadMainListProjects']),
 
-			try {
-                let response = await this.$http.get('/projects')
+		// async loadProjectFromApi(){
 
-				this.listProjects = response.data
+		// 	try {
+        //         let response = await this.$http.get('/projects')
 
-				console.log('feito o load', this.listProjects)
+		// 		this.listProjects = response.data
 
-            } catch (error) {
+        //     } catch (error) {
 
-				this.showSnackBar('Falha ao carregar projetos!')
-				
-                console.log('Erro ao tentar gravar projeto', error)
-            }
+		// 		this.showSnackBar('Falha ao carregar projetos!')
+        //     }
 
-		}
+		// }
 	},
 	
 	computed: {
-		...mapGetters(['isSnackbarVisible', 'messageSnackBar']),
+		...mapGetters(['isSnackbarVisible', 'messageSnackBar', 'mainListProjects']),
 	},
 
 	watch: {
@@ -82,11 +80,15 @@ export default {
 		}
 	},
 
+	created(){
+		this.$store.dispatch('loadMainListProjects')
+	},
+	
 	mounted() {
 
-		this.loadProjectFromApi()
-		//this.setSnackbarVisible(true)
-		//this.isSnackbarVisibleLocal = true
+		//this.loadProjectFromApi()
+
+		//this.loadMainListProjects()
 	}
 }
 </script>

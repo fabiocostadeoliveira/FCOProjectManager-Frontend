@@ -15,7 +15,7 @@
             <md-field :class="errorMsgClass">
                 <label>Nome do Projeto</label>
                 <md-input 
-                    v-model="name"
+                    v-model="value.name"
                     maxlength="50"
                     @blur="validateNameProject">
                 </md-input>
@@ -23,7 +23,7 @@
             </md-field>
 
             <DataPickerPeriod
-                :value="period"/>
+                :value="value.period"/>
 
             
         </md-dialog-content>
@@ -60,16 +60,21 @@ export default {
         DataPickerPeriod
     },
     data: () =>({
-        name: '',
         period: {},
         showErrorNameProject: false
     }),
+
+    props:{
+        value:{
+            type: Object,
+        }
+    },
 
     methods: {
         
         ...mapMutations(['alternateDialogProjectHandle']),
 
-        ...mapActions(['showSnackBar']),
+        ...mapActions(['showSnackBar','loadMainListProjects']),
 
         
         closeModalProjectHandle(){
@@ -84,25 +89,37 @@ export default {
 
         async saveProject(){
 
-            let projectObj = this.factoryProject(this.name, this.period.startDate, this.period.endDate)
+            let projectObj = this.factoryProject(this.value.id, this.value.name, this.value.period.startDate, this.value.period.endDate)
             
             try {
-                await this.$http.post('/projects', projectObj)
+                
+                if(projectObj.id !== undefined && projectObj !== null){
+
+                    await this.$http.put('/projects/' + projectObj.id, projectObj)    
+
+                }else{
+                    
+                    await this.$http.post('/projects', projectObj)
+
+                }
+
+                this.$store.dispatch('loadMainListProjects')
 
                 this.closeModalProjectHandle()
 
-                //this.clearFields()
-                
             } catch (error) {
 
                 this.showSnackBar('Falha ao tentar salvar registro')
+                
                 console.log('Erro ao tentar gravar projeto', error)
             }
             
         },
 
-        factoryProject(name, startDate, endDate){
+        factoryProject(id, name, startDate, endDate){
             let newProject = {}
+            
+            newProject.id = id
             
             newProject.name = name
             
@@ -114,21 +131,21 @@ export default {
         },
 
         clearFields(){
-            this.name = ''
+            this.value.name = ''
 
-            this.$set(this.period,'startDate', null)
+            this.$set(this.value.period,'startDate', null)
 
-            this.$set(this.period,'endDate', null)
+            this.$set(this.value.period,'endDate', null)
         },
 
         validateNameProject(){
             this.showErrorNameProject = this.isValidProjectName ? false : true 
-        }
-
+        },
 
     },
 
     computed: {
+
         ...mapGetters(['isOpenDialogProjectHantle']),
 
         showDialog(){
@@ -136,11 +153,13 @@ export default {
         },
 
         isDisabledSaveButtom(){
-            return !(this.isValidProjectName && this.isValidDate(this.period.startDate) && this.isValidDate(this.period.endDate))
+            return !(this.isValidProjectName && 
+                        this.isValidDate(this.value.period.startDate) &&
+                        this.isValidDate(this.value.period.endDate))
         },
 
         isValidProjectName(){
-            return this.name.length >= 5 && this.name.length <= 80
+            return this.value.name.length >= 5 && this.value.name.length <= 80
         },
 
         errorMsgClass(){
@@ -148,7 +167,8 @@ export default {
             return {
                 'md-invalid': this.showErrorNameProject
             }   
-        }
+        },
+
     }, 
 
     mounted(){

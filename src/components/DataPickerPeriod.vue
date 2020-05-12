@@ -47,21 +47,6 @@ export default {
             return currentDate < this.value.startDate ? true : false
         },
 
-        /*
-        isValidDate(value){
-
-            let time = null
-            try {
-                time = value.getTime()
-            } catch (error) {
-                return false
-            }
-
-            return isNaN(time) ? false : true
-        },
-        */
-        
-        
         setUpEndDate(){
 
             if (!this.isValidDate(this.value.startDate))
@@ -69,8 +54,11 @@ export default {
             else
                 this.disableEndDate = false
             
-            if (this.disableEndDate == true)
+            if (this.disableEndDate == true){
+
                 this.$set(this.value, 'endDate', null)    
+                console.log('caiu no disable do campo')
+            }
         },
         
     },
@@ -92,9 +80,15 @@ export default {
         }
         
     },
+    /*
     mounted(){
         this.setUpEndDate()
-    }    
+    } */
+    
+    updated(){
+        console.log('updated')
+        this.setUpEndDate()
+    }
 
 
 }
