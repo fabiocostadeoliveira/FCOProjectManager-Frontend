@@ -1,6 +1,7 @@
 <template>
 
-    <div id="projectHandler"
+    <div
+        id="projectHandler"
         class="styleTemplate">
 
         <md-dialog 
@@ -117,6 +118,7 @@ export default {
         },
 
         factoryProject(id, name, startDate, endDate){
+            
             let newProject = {}
             
             newProject.id = id
@@ -131,6 +133,7 @@ export default {
         },
 
         clearFields(){
+            
             this.value.name = ''
 
             this.$set(this.value.period,'startDate', null)
@@ -195,6 +198,5 @@ export default {
     .md-theme-default.md-dialog-fullscreen.md-dialog-container{
         transform: none; 
     }
-    
 
 </style>

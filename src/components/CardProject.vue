@@ -1,31 +1,34 @@
 <template>
     <div class="md-layout-item">
+        
         <md-card md-with-hover>
-            <md-ripple>
-                <md-card-header>
-                <div class="md-title">{{ value.name | mainTitle | capitalize }}  </div>
-                <br/>
-                <!-- <div class="md-subhead">Data Inicio: {{ value.startDate }}</div>
-                <div class="md-subhead">Data Fim: {{ value.endDate }}</div> -->
-                </md-card-header>
 
-                <md-card-content>
-                    <div class="md-subhead">Data Inicio: {{ value.startDate }}</div>
-                    <br/>    
-                    <div class="md-subhead endDateLabel" >Data Fim: {{ value.endDate }}</div>
-                </md-card-content> 
+            <div @click="onClickCard">
+                <md-ripple>
+                    <md-card-header>
+                        <div class="md-title">{{ value.name | mainTitle | capitalize }}  </div>
+                        <br/>
+                    </md-card-header>
 
-                <md-card-actions>
-                    <md-button
-                        @click="onClickDelete">Deletar</md-button>
-                    <md-button
-                        @click="onEdit">Editar</md-button>                    
-                </md-card-actions>
+                    <md-card-content>
+                        <div class="md-subhead">Data Inicio: {{ value.startDate }}</div>
+                        <br/>    
+                        <div class="md-subhead endDateLabel" >Data Fim: {{ value.endDate }}</div>
+                    </md-card-content> 
 
-            </md-ripple>
+                    <md-card-actions>
+                        <md-button
+                            @click="onClickDelete">Deletar</md-button>
+                        <md-button
+                            @click="onEdit">Editar</md-button>                    
+                    </md-card-actions>
+
+                </md-ripple>
+
+            </div>
         </md-card>
 
-        <md-dialog-confirm
+        <md-dialog-confirm            
             :md-active.sync="showModalConfirmDelete"
             md-title="Remover Projeto ?"
             md-content="Isso irá deletar todas as tarefas relacionadas ao projeto."
@@ -91,20 +94,6 @@ export default {
             }
         },
 
-        // async updateProject(){
-
-        //     try {
-
-        //         let idProject = this.value.id
-
-        //         await this.$http.put('/projects/' + idProject, {params: this.objEdit})
-
-        //     } catch (error) {
-                
-        //         this.showSnackBar('Falha ao tentar alterar registro')
-        //     }
-        // },
-
         onConfirmModal(){
 
             this.deleteProject()
@@ -137,24 +126,6 @@ export default {
             return newObj
         },
         
-/*
-        copyValueForEdit(){
-
-            let startDate = this.$moment(this.value.startDate, 'DD/MM/YYYY', true).toDate()
-
-            let endDate = this.$moment(this.value.endDate, 'DD/MM/YYYY', true).toDate()
-
-            let newPeriod = {
-                startDate: startDate,
-                endDate: endDate
-            }
-
-            this.$set(this.objEdit,'name', this.value.name)
-
-            this.$set(this.objEdit,'period', newPeriod)
-        },
-*/
-        
         onEdit(){
             
             this.objEdit = this.newObjProjectToUpdate(this.value.id, this.value.name, this.value.startDate, this.value.endDate)
@@ -164,6 +135,11 @@ export default {
             this.alternateDialogProjectHandle()
 
 
+        },
+
+        onClickCard(){
+            
+            this.$router.replace('/pageTasks')
         }
     },
 
@@ -172,9 +148,9 @@ export default {
         mainTitle(text){
             if(text === undefined) return ''
 
-            let newText = text.substring(0, 25)
+            let newText = text.substring(0, 30)
             
-            if(text.length > 20) 
+            if(text.length > 30) 
                 newText += '...'
 
             return newText
@@ -206,4 +182,14 @@ export default {
     .endDateLabel{
         padding-left: 8px;
     }
+
+    .md-card-header{
+        height: 100px;
+    }
+
+    .md-theme-default .md-dialog-container{
+        transform: none;
+        transition: none; 
+    }
+
 </style>

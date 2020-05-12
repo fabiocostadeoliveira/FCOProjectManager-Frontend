@@ -51,19 +51,6 @@ export default {
 
 		...mapActions(['loadMainListProjects']),
 
-		// async loadProjectFromApi(){
-
-		// 	try {
-        //         let response = await this.$http.get('/projects')
-
-		// 		this.listProjects = response.data
-
-        //     } catch (error) {
-
-		// 		this.showSnackBar('Falha ao carregar projetos!')
-        //     }
-
-		// }
 	},
 	
 	computed: {
@@ -84,12 +71,6 @@ export default {
 		this.$store.dispatch('loadMainListProjects')
 	},
 	
-	mounted() {
-
-		//this.loadProjectFromApi()
-
-		//this.loadMainListProjects()
-	}
 }
 </script>
 
