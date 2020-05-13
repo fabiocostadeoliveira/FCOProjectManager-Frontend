@@ -108,7 +108,7 @@ export default {
 
                 this.closeModalTaskHandle()
 
-                this.$store.dispatch('loadMainListTasks')
+                this.$store.dispatch('loadMainListTasks', {projectId: this.project.id })
 
             } catch (error) {
 

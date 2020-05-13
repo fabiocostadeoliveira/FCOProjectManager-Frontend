@@ -174,7 +174,7 @@ export default {
             try {
                 await this.$http.delete('/tasks/' + this.idTaskToDelete)
 
-                this.$store.dispatch('loadMainListTasks')
+                this.$store.dispatch('loadMainListTasks', {projectId: this.project.id })
 
             } catch (error) {
                 
@@ -264,7 +264,7 @@ export default {
             this.$router.replace('/')
         }
         
-        this.$store.dispatch('loadMainListTasks')
+        this.$store.dispatch('loadMainListTasks', {projectId: this.project.id })
     }
 
 }

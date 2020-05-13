@@ -89,9 +89,14 @@ export default new Vuex.Store({
             })
         },
 
-        loadMainListTasks({ commit }){
-
-            axios.get('/tasks').then((response) =>{
+        loadMainListTasks({ commit }, payload){
+            
+            let queryParams = {
+                params: {
+                    projectId: payload.projectId 
+                }
+            }
+            axios.get('/tasks/byProject', queryParams ).then((response) =>{
                 console.log('dentro da action', response.data)
                 commit('setMainListTasks', response.data)
             })
