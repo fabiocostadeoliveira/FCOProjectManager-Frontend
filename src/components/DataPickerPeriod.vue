@@ -55,9 +55,7 @@ export default {
                 this.disableEndDate = false
             
             if (this.disableEndDate == true){
-
                 this.$set(this.value, 'endDate', null)    
-                console.log('caiu no disable do campo')
             }
         },
         
@@ -80,13 +78,9 @@ export default {
         }
         
     },
-    /*
-    mounted(){
-        this.setUpEndDate()
-    } */
-    
+
     updated(){
-        console.log('updated')
+        
         this.setUpEndDate()
     }
 

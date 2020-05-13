@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import {BASE_URL_API} from '../src/constants/urlsBase'
+import {BASE_URL_FRONTEND} from '../src/constants/urlsBase'
 import Home from './views/Home.vue'
 import PageTasks from './views/PageTasks'
 
 Vue.use(Router)
 
 export default new Router({
-	mode: 'history',
-	base: BASE_URL_API,
+	mode: 'hash',
+	base: BASE_URL_FRONTEND,
 	routes: [
 		
 		{
@@ -19,7 +19,9 @@ export default new Router({
 		{
 			path: '/pageTasks',
 			name: 'pageTasks',
-			component: PageTasks
+			component: PageTasks,
+			props: true,
+			activeClass: 'active'
 		},
 	]
 

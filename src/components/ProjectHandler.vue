@@ -111,8 +111,6 @@ export default {
             } catch (error) {
 
                 this.showSnackBar('Falha ao tentar salvar registro')
-                
-                console.log('Erro ao tentar gravar projeto', error)
             }
             
         },
@@ -162,11 +160,11 @@ export default {
         },
 
         isValidProjectName(){
-            return this.value.name.length >= 5 && this.value.name.length <= 80
+            return this.value.name.length >= 5 && this.value.name.length <= 50
         },
 
         errorMsgClass(){
-            console.log('is valid name ', this.isValidProjectName)
+
             return {
                 'md-invalid': this.showErrorNameProject
             }   

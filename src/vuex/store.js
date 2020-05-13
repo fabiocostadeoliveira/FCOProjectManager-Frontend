@@ -1,18 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-//import { ConfigAxios } from '../functions/ConfigAxios'
-
 import axios from 'axios'
 
 
 Vue.use(Vuex)
 
-//new ConfigAxios()
-
 export default new Vuex.Store({
 
     state: {
         isOpenDialogProjectHantle: false,
+
+        isOpenDialogTaskHantle: false,
 
         snackbarVisible: false,
 
@@ -27,6 +25,12 @@ export default new Vuex.Store({
         alternateDialogProjectHandle(state){
             
             state.isOpenDialogProjectHantle = !state.isOpenDialogProjectHantle
+        },
+
+        alternateDialogTaskHandle(state){
+            console.log('alternate task Handle')
+            
+            state.isOpenDialogTaskHantle = !state.isOpenDialogTaskHantle
         },
 
         setSnackbarVisible(state, payload){
@@ -46,6 +50,8 @@ export default new Vuex.Store({
     getters: {
         
         isOpenDialogProjectHantle: state => state.isOpenDialogProjectHantle,
+
+        isOpenDialogTaskHantle: state => state.isOpenDialogTasktHantle,
 
         isSnackbarVisible: state => state.snackbarVisible,
 
@@ -72,15 +78,17 @@ export default new Vuex.Store({
         },
 
         loadMainListProjects({ commit }){
-            console.log('dentro do load Main list', Vue.$http)
 
             axios.get('/projects').then((response) =>{
-                console.log('fim da promisse', response.data)
-                    commit('setMainListProjects', response.data)
+                commit('setMainListProjects', response.data)
             })
-            
-            //this.$http.get('/projects')
-                
+        },
+
+        loadMainListTaskss({ commit }){
+
+            axios.get('/tasks').then((response) =>{
+                commit('setMainListTasks', response.data)
+            })
         }
     }
 

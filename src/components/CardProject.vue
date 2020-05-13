@@ -1,7 +1,7 @@
 <template>
     <div class="md-layout-item">
         
-        <md-card md-with-hover>
+        <md-card md-with-hover >
 
             <div @click="onClickCard">
                 <md-ripple>
@@ -16,7 +16,7 @@
                         <div class="md-subhead endDateLabel" >Data Fim: {{ value.endDate }}</div>
                     </md-card-content> 
 
-                    <md-card-actions>
+                    <md-card-actions v-if="!disableActiveButtons">
                         <md-button
                             @click="onClickDelete">Deletar</md-button>
                         <md-button
@@ -69,7 +69,13 @@ export default {
         value: {
             type: Object,
             required: true
+        },
+
+        disableActiveButtons:{
+            type: Boolean,
+            default: () =>(false)
         }
+
     },
 
     methods: {
@@ -99,9 +105,11 @@ export default {
             this.deleteProject()
         },
 
-        onClickDelete(){
+        onClickDelete(event){
             
             this.showModalConfirmDelete = true
+
+            event.stopPropagation()
         },
 
         newObjProjectToUpdate(id, name, startDate, endDate){
@@ -126,7 +134,7 @@ export default {
             return newObj
         },
         
-        onEdit(){
+        onEdit(event){
             
             this.objEdit = this.newObjProjectToUpdate(this.value.id, this.value.name, this.value.startDate, this.value.endDate)
     
@@ -134,12 +142,20 @@ export default {
 
             this.alternateDialogProjectHandle()
 
-
+            event.stopPropagation()
         },
 
-        onClickCard(){
+        onClickCard(event){
+
+            if (this.disableActiveButtons){
+                
+                event.stopPropagation()
+
+                return    
+            }            
+
             
-            this.$router.replace('/pageTasks')
+            this.$router.push({ name: 'pageTasks', params: {project: this.value }})
         }
     },
 
