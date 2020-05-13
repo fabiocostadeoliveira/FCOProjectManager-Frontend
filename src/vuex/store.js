@@ -16,20 +16,19 @@ export default new Vuex.Store({
 
         messageSnackBar: '',
 
-        mainListProjects: []
+        mainListProjects: [],
+
+        mainListTasks: []
     },
 
 
     mutations: {
         
         alternateDialogProjectHandle(state){
-            
             state.isOpenDialogProjectHantle = !state.isOpenDialogProjectHantle
         },
 
         alternateDialogTaskHandle(state){
-            console.log('alternate task Handle')
-            
             state.isOpenDialogTaskHantle = !state.isOpenDialogTaskHantle
         },
 
@@ -43,6 +42,10 @@ export default new Vuex.Store({
 
         setMainListProjects(state, payload){
             state.mainListProjects = payload
+        },
+
+        setMainListTasks(state, payload){
+            state.mainListTasks = payload
         }
 
     },
@@ -51,13 +54,15 @@ export default new Vuex.Store({
         
         isOpenDialogProjectHantle: state => state.isOpenDialogProjectHantle,
 
-        isOpenDialogTaskHantle: state => state.isOpenDialogTasktHantle,
+        isOpenDialogTaskHantle: state => state.isOpenDialogTaskHantle,
 
         isSnackbarVisible: state => state.snackbarVisible,
 
         messageSnackBar: state => state.messageSnackBar,
 
-        mainListProjects: state => state.mainListProjects
+        mainListProjects: state => state.mainListProjects,
+
+        mainListTasks: state => state.mainListTasks
 
     },
 
@@ -84,9 +89,10 @@ export default new Vuex.Store({
             })
         },
 
-        loadMainListTaskss({ commit }){
+        loadMainListTasks({ commit }){
 
             axios.get('/tasks').then((response) =>{
+                console.log('dentro da action', response.data)
                 commit('setMainListTasks', response.data)
             })
         }

@@ -7,7 +7,6 @@
             :md-close-on-esc="false">
 
             <md-dialog-title>Task</md-dialog-title>
-        
             
             <md-dialog-content class="modalContent">
 
@@ -15,16 +14,17 @@
                     <label>Nome da Tarefa</label>
                     <md-input 
                         v-model="value.name"
-                        maxlength="50"
+                        maxlength="80"
                         @blur="validateNameTask">
                     </md-input>
                     <span class="md-error">Tamanho minimo 5 caracteres, maximo 80!</span>
                 </md-field>
 
                 <DataPickerPeriod
-                    :value="value.period"/>
+                    :value="value.period"
+                    :disablePreviousDates="strToDate(project.startDate)"/>
 
-                <md-checkbox v-model="value.isFinished" disabled>Finalizada</md-checkbox>
+                <md-checkbox v-model="value.isFinished">Finalizada</md-checkbox>
 
             </md-dialog-content>
             
@@ -46,19 +46,21 @@
 
 <script>
 
-import {mapMutations,mapActions} from 'vuex'
+import {mapGetters,mapMutations,mapActions} from 'vuex'
 import DataPickerPeriod from '../components/DataPickerPeriod'
+import {dateUtil} from '../mixins/DateUtils'
 
 export default {
     
     name: 'TaskHandle',
-    
+    mixins: [dateUtil],
     components: {
         DataPickerPeriod
     },
     
     data:() =>({
-        showErrorNameTask: false
+        showErrorNameTask: false,
+        teste: false
     }),
     
     props: {
@@ -71,6 +73,11 @@ export default {
                 isFinished: false,
                 idProject: null
             })
+        },
+
+        project:{
+            type:Object,
+            required: true
         }
     },
 
@@ -80,28 +87,19 @@ export default {
         
         ...mapActions(['showSnackBar','loadMainListTasks']),
 
-        
-        closeModalTaskHandle(){
-            
-            this.showErrorNameTask = false
-
-            this.alternateDialogTaskHandle()
-
-            this.clearFields()
-
-        },
-        
         async saveTask(){
 
-            let taskObj = this.factoryTaks(this.value.id, 
+            console.log('idProject', this.project)
+            let taskObj = this.factoryTask(this.value.id, 
                                                 this.value.name,
                                                 this.value.period.startDate,
                                                 this.value.period.endDate, 
                                                 this.value.isFinished,
-                                                this.value.idProject)
+                                                this.project.id)
             
             try {
                 
+                console.log('obj Antes do save', taskObj)
                 if(taskObj.id !== undefined && taskObj !== null){
 
                     await this.$http.put('/tasks/' + taskObj.id, taskObj)    
@@ -109,6 +107,8 @@ export default {
                     
                     await this.$http.post('/tasks', taskObj)
                 }
+
+                this.closeModalTaskHandle()
 
                 this.$store.dispatch('loadMainListTasks')
 
@@ -132,21 +132,50 @@ export default {
             
             newTask.endDate = this.getBRFormat(endDate)
 
-            newTask.isFinished = isFinished
+            newTask.finished = isFinished
 
-            newTask.idProject = idProject
+            newTask.projectId = idProject
 
             return newTask
         },
 
         
         validateNameTask(){
+            console.log('isValidTaskName', this.isValidTaskName)
             this.showErrorNameTask = this.isValidTaskName ? false : true 
+        },
+
+        closeModalTaskHandle(){
+            
+            this.showErrorNameTask = false
+
+            this.alternateDialogTaskHandle()
+
+            this.clearFields()
+
+        },
+
+
+        clearFields(){
+            
+            this.id = null
+
+            this.value.name = ''
+
+            //this.value.idProject = null,
+
+            this.$set(this.value.period,'startDate', null)
+
+            this.$set(this.value.period,'endDate', null)
+
+            this.$set(this.value,'isFinished', false)
         },
 
     },
 
     computed: {
+
+        ...mapGetters(['isOpenDialogTaskHantle']),
 
         showDialog(){
             return this.$store.getters.isOpenDialogTaskHantle

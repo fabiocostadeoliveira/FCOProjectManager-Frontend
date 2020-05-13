@@ -3,7 +3,8 @@
   <div>
         <md-datepicker 
             v-model="value.startDate" 
-            md-immediately>
+            md-immediately
+            :md-disabled-dates="disableDatesStartDate">
             <label>Data de Inicio</label>
         </md-datepicker>
 
@@ -11,7 +12,7 @@
             <md-datepicker
                 v-model="value.endDate"
                 md-immediately
-                :md-disabled-dates="disableDatesLessThan"
+                :md-disabled-dates="disableDatesEndDate"
                 >
                 <label>Data de Fim</label>
             </md-datepicker>
@@ -38,14 +39,27 @@ export default {
         value: {
             type: Object,
             required: true
+        },
+
+        disablePreviousDates:{
+            type: Date,
+            required: true
         }
     },
 
     methods: {
         
-        disableDatesLessThan(currentDate){
-            return currentDate < this.value.startDate ? true : false
+        
+        disableDatesStartDate(currentDate){            
+            return currentDate < this.disablePreviousDates ? true : false
         },
+        
+        disableDatesEndDate(currentDate){
+            return currentDate < this.value.startDate ? true : false
+            //return currentDate < this.value.startDate ? true : false
+        },
+
+
 
         setUpEndDate(){
 

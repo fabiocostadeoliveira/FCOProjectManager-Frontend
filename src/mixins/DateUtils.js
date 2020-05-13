@@ -16,6 +16,11 @@ export const dateUtil = {
 
             return isNaN(time) ? false : true
         },
+
+        strToDate(strDate){
+            return this.$moment(strDate, 'DD/MM/YYYY', true).toDate()
+        }
+
     }    
 
 }
