@@ -38,7 +38,6 @@
                 <div class="md-toolbar-section-start md-accent">
                     <h1 class="md-title">Tarefas</h1>
                 </div>
-
                 <md-field md-clearable class="md-toolbar-section-end">
                     <md-input placeholder="Buscando por nome da tarefa..." v-model="search" @input="searchOnTable" />
                 </md-field>
@@ -46,21 +45,46 @@
 
             <md-table-empty-state
                 md-label="Não encontrou tarefas"
-                :md-description="`Nao encontro resultados para '${search}'`">
-        
-                <md-button class="md-primary md-raised" @click="newTaskOnTable">Criar nova tarefa</md-button>
+                :md-description="descriptionSearch">
+                <md-button class="md-primary md-raised md-accent" @click="showModal()">Criar nova tarefa</md-button>
             </md-table-empty-state>
 
             <md-table-row slot="md-table-row" slot-scope="{ item }">
                 <md-table-cell md-label="Nome" md-sort-by="name">{{ item.name }}</md-table-cell>
                 <md-table-cell md-label="Data Inicio" md-sort-by="startDate">{{ item.startDate }}</md-table-cell>
                 <md-table-cell md-label="Data Fim" md-sort-by="endDate">{{ item.endDate }}</md-table-cell>
-                <md-table-cell md-label="Finalizada" md-sort-by="finished">{{ item.finished | labelFinished }}</md-table-cell>
+                <md-table-cell md-label="Finalizada" md-sort-by="finished">{{ item.finished | labelFinished }}
+                </md-table-cell>
+                <md-table-cell md-label="" >
+                    <div class="actionsButtons">
+                        <md-button 
+                            class="md-icon-button md-accent"       
+                            @click="onEdit(item)">
+                            <md-icon id="iconHome">create</md-icon>
+                        </md-button>
+                        <md-button 
+                            class="md-icon-button md-accent"       
+                            @click="onDelete(item)">
+                            <md-icon id="iconHome">delete_forever</md-icon>
+                        </md-button>
+                    </div>
+                </md-table-cell>
+
             </md-table-row>
         </md-table>
 
         <TaskHandle
-            :project="project"/>
+            :project="project"
+            :value="objEdit"/>
+
+
+        <md-dialog-confirm            
+            :md-active.sync="showModalConfirmDelete"
+            md-title="Remover Task ?"
+            md-content="Isso irá deletar esta tarafa."
+            md-confirm-text="Confirmar"
+            md-cancel-text="Cancelar"            
+            @md-confirm="onConfirmModal()" />
 
     </div>
 </template>
@@ -109,11 +133,22 @@ export default {
 
         selected: [],
 
+        idTaskToDelete: null,
+
+        showModalConfirmDelete: false,
+
         projectDetails:{
             completedPercent: 10,
             total:50,
             isLate: true
         },
+
+        objEdit:{
+            name: '',
+            period: {},
+            isFinished: false,
+            idProject: null
+        }
     }),
 
     methods: {
@@ -132,11 +167,79 @@ export default {
 
         searchOnTable () {
             this.searched = searchByName(this.mainListTasks, this.search)
-      }
+        },
+
+        async deleteTask(){
+
+            try {
+                await this.$http.delete('/tasks/' + this.idTaskToDelete)
+
+                this.$store.dispatch('loadMainListTasks')
+
+            } catch (error) {
+                
+                this.showSnackBar('Falha ao tentar deletar registro')
+            } finally{
+                
+                this.idTaskToDelete = null
+            }
+        },
+
+        newObjTaskToUpdate(id, name, startDate, endDate, isFinished){
+            
+            let startDateTypeDate = this.$moment(startDate, 'DD/MM/YYYY', true).toDate()
+
+            let endDateTypeDate = this.$moment(endDate, 'DD/MM/YYYY', true).toDate()
+
+            let newPeriod = {
+                startDate: startDateTypeDate,
+                endDate: endDateTypeDate
+            }
+            
+            let newObj = {}
+
+            newObj.id = id
+
+            newObj.name = name
+            
+            newObj.period = newPeriod
+
+            newObj.isFinished = isFinished
+
+            return newObj
+        },
+
+
+        onEdit(item){
+            
+            this.objEdit = this.newObjTaskToUpdate(item.id, item.name, item.startDate, item.endDate, item.isFinished)
+
+            this.alternateDialogTaskHandle()
+
+        },
+
+        onDelete(item){
+            this.showModalConfirmDelete = true
+
+            this.idTaskToDelete = item.id
+        },
+
+        onConfirmModal(){
+
+            this.deleteTask()
+        },
+
     },
 
     computed: {
         ...mapGetters(['mainListTasks']),
+
+        descriptionSearch(){
+
+            let description = this.search === "" && this.searched.length === 0 ? "" : `Não encontrou resultados para "${this.search}"'`
+
+            return description
+        }
     },
 
     filters:{
@@ -157,13 +260,17 @@ export default {
 
     created(){
         
+        if(this.project === undefined || this.project.id === null){
+            this.$router.replace('/')
+        }
+        
         this.$store.dispatch('loadMainListTasks')
     }
 
 }
 </script>
 
-<style>
+<style >
 
     .mainPage{
         display: flex;
@@ -179,6 +286,17 @@ export default {
     .columnTaskHandle{
         padding-left: 15px;
         padding-top: 15px;
+    }
+
+    
+    .actionsButtons{    
+
+        width: 100px;
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: 0;
+        margin-right: 0;
+        
     }
 
 </style>

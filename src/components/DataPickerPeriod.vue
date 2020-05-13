@@ -43,7 +43,7 @@ export default {
 
         disablePreviousDates:{
             type: Date,
-            required: true
+            default: ()=>(new Date('01/01/1990'))
         }
     },
 

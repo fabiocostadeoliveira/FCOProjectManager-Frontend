@@ -89,7 +89,6 @@ export default {
 
         async saveTask(){
 
-            console.log('idProject', this.project)
             let taskObj = this.factoryTask(this.value.id, 
                                                 this.value.name,
                                                 this.value.period.startDate,
@@ -99,7 +98,6 @@ export default {
             
             try {
                 
-                console.log('obj Antes do save', taskObj)
                 if(taskObj.id !== undefined && taskObj !== null){
 
                     await this.$http.put('/tasks/' + taskObj.id, taskObj)    
