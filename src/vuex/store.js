@@ -51,7 +51,15 @@ export default new Vuex.Store({
         },
 
         setDetailsProject(state, payload){
-            state.detailsProject = payload
+            
+            if (payload == null)
+                state.detailsProject = {
+                    completedPercentage: 0.00,
+                    totalTasks:0,
+                    willBeLate: false
+                }
+            else
+                state.detailsProject = payload
         }
 
     },
@@ -108,10 +116,8 @@ export default new Vuex.Store({
             axios.get('/projects/details', queryParams)
                 .then((response) => {
                     
-                    let {data} = response || {}
+                    let {data} = response || null
                     
-                    console.log('carregou details', data)
-
                     commit('setDetailsProject', data)
                 })
             

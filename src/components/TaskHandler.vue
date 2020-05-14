@@ -24,7 +24,7 @@
                     :value="value.period"
                     :disablePreviousDates="strToDate(project.startDate)"/>
 
-                <md-checkbox v-model="value.isFinished">Finalizada</md-checkbox>
+                <md-checkbox v-model="value.finished">Finalizada</md-checkbox>
 
             </md-dialog-content>
             
@@ -70,14 +70,14 @@ export default {
             default: () => ({
                 name: '',
                 period: {},
-                isFinished: false,
+                finished: false,
                 idProject: null
             })
         },
 
         project:{
             type:Object,
-            required: true
+            default: () =>({})
         }
     },
 
@@ -93,7 +93,7 @@ export default {
                                                 this.value.name,
                                                 this.value.period.startDate,
                                                 this.value.period.endDate, 
-                                                this.value.isFinished,
+                                                this.value.finished,
                                                 this.project.id)
             
             try {
@@ -118,7 +118,7 @@ export default {
         },
 
 
-        factoryTask(id, name, startDate, endDate, isFinished, idProject){
+        factoryTask(id, name, startDate, endDate, finished, idProject){
             
             let newTask = {}
             
@@ -130,7 +130,7 @@ export default {
             
             newTask.endDate = this.getBRFormat(endDate)
 
-            newTask.finished = isFinished
+            newTask.finished = finished
 
             newTask.projectId = idProject
 
@@ -166,7 +166,7 @@ export default {
 
             this.$set(this.value.period,'endDate', null)
 
-            this.$set(this.value,'isFinished', false)
+            this.$set(this.value,'finished', false)
         },
 
     },

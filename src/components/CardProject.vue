@@ -68,7 +68,8 @@ export default {
     props: {
         value: {
             type: Object,
-            required: true
+            //required: true
+            default: () =>({})
         },
 
         disableActiveButtons:{
@@ -162,12 +163,16 @@ export default {
     filters:{
     
         mainTitle(text){
+            
+            const maxLength = 20
+            
+            
             if(text === undefined) return ''
 
-            let newText = text.substring(0, 30)
-            
-            if(text.length > 30) 
-                newText += '...'
+            let newText = text
+
+            if(text.length > maxLength) 
+                newText = text.substring(0, maxLength) + '...'
 
             return newText
         },

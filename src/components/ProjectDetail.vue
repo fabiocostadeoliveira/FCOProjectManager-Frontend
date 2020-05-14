@@ -1,15 +1,24 @@
 <template>
 	<div>
+		<md-card md-with-hover >
 
-		<div id="headerProject">
-			<md-content class="md-card md-theme-default md-with-hover">
-				<div class="contentDetails">
-					<li> Percentual completo: {{ value.completedPercentage }} %</li>
-					<li> Total de tarefas: {{ value.totalTasks }}</li>
-					<li> Atrasado: {{ value.willBeLate | formatIsLate }}</li>
-				</div>
-			</md-content>
-		</div>
+            <div>
+                <md-ripple>
+
+                    <md-card-header>
+                        <div class="md-title">Detalhes</div>
+                    </md-card-header>
+
+                    <md-card-content>
+						<li :class="classCompletedProject"> Percentual completo: {{ value.completedPercentage | formatCompletedPercentage }} %</li>
+						<li> Total de tarefas: {{ value.totalTasks }}</li>
+						<li :class="classWillBeLate"> Atrasado: {{ value.willBeLate | formatIsLate }}</li>
+                    </md-card-content> 
+
+                </md-ripple>
+            </div>
+        </md-card>
+
 	</div>
 </template>
 
@@ -24,10 +33,20 @@ export default {
 		value:{
 			type: Object,			
 			default: () =>({
-				completedPercent: 10,
-				total:0,
-				isLate: false
+				completedPercentage: 0.00,
+				totalTasks:0,
+				willBeLate: false
 			})
+		}
+	},
+
+	computed: {
+		classWillBeLate(){
+			return this.value.willBeLate ? 'willBeLate' : ''
+		},
+
+		classCompletedProject(){
+			return this.value.completedPercentage == 100 ? 'classCompletedProject' : ''
 		}
 	},
 
@@ -35,6 +54,15 @@ export default {
 
 		formatIsLate(value){
 			return value ? 'Sim' : 'Não'
+		},
+
+		formatCompletedPercentage(value){
+
+			let newValue = value || 0
+
+			let vFloat = parseFloat(newValue).toFixed(2)
+
+			return vFloat
 		}
 	}
 
@@ -48,6 +76,15 @@ export default {
 		padding-bottom: 15px;
 		padding-left: 15px;
 		font-size: 1.2em;
+	}
+
+	.willBeLate{
+		color:tomato;
+	}
+
+	.classCompletedProject{
+		
+		color: var(--md-theme-default-accent-on-background, #64dd17)
 	}
 
 </style>

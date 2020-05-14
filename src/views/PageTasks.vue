@@ -17,20 +17,17 @@
         <md-divider></md-divider>
         
         <div class="columnTaskHandle">
-            
             <md-button 
-                class="md-icon-button md-accent"       
+                class="buttomAddProject md-accent"
                 @click="showModal()">
-
-				<md-icon id="iconHome">add</md-icon>
+                <md-icon id="iconAdd">add</md-icon>       
+                <span id="labelProject">Atividade</span>
             </md-button>
-
         </div>
 
         <md-divider></md-divider>
 
         <md-divider></md-divider>
-
 
         <md-table v-model="searched" md-sort="name" md-sort-order="asc" table-header-color="green" class="md-primary" >
             
@@ -146,7 +143,7 @@ export default {
         objEdit:{
             name: '',
             period: {},
-            isFinished: false,
+            finished: false,
             idProject: null
         }
     }),
@@ -155,20 +152,23 @@ export default {
         
         ...mapMutations(['alternateDialogTaskHandle']),
 
+
         showModal(){
 
-            console.log('showModal')
             this.alternateDialogTaskHandle()
         },
 
+        
         newTaskOnTable(){
             console.log('newTaskOnTable', 'nao implementado')
         },
 
+        
         searchOnTable () {
             this.searched = searchByName(this.mainListTasks, this.search)
         },
 
+        
         async deleteTask(){
 
             try {
@@ -185,27 +185,8 @@ export default {
             }
         },
 
-        /*
-        loadProjectDetails(){
 
-            let queryParams = {
-                params: {
-                    projectId: this.project.id
-                }
-            }
-
-            this.$http.get('/projects/details', queryParams)
-                .then((response) => {
-
-                    let {data} = response.data || {}
-
-                    this.projectDetails = data;
-                })
-
-        },
-        */
-
-        newObjTaskToUpdate(id, name, startDate, endDate, isFinished){
+        newObjTaskToUpdate(id, name, startDate, endDate, finished){
             
             let startDateTypeDate = this.$moment(startDate, 'DD/MM/YYYY', true).toDate()
 
@@ -224,7 +205,7 @@ export default {
             
             newObj.period = newPeriod
 
-            newObj.isFinished = isFinished
+            newObj.finished = finished
 
             return newObj
         },
@@ -232,13 +213,14 @@ export default {
 
         onEdit(item){
             
-            this.objEdit = this.newObjTaskToUpdate(item.id, item.name, item.startDate, item.endDate, item.isFinished)
+            console.log('item para edit', item)
+            this.objEdit = this.newObjTaskToUpdate(item.id, item.name, item.startDate, item.endDate, item.finished)
 
             this.alternateDialogTaskHandle()
-
         },
 
         onDelete(item){
+
             this.showModalConfirmDelete = true
 
             this.idTaskToDelete = item.id
@@ -252,6 +234,7 @@ export default {
     },
 
     computed: {
+        
         ...mapGetters(['mainListTasks', 'detailsProject']),
 
         descriptionSearch(){
@@ -272,23 +255,25 @@ export default {
     watch:{
         
         mainListTasks(){
+            
             if(this.mainListTasks !== null ){
                 this.searched = this.mainListTasks
             }
         },
 
         detailsProject(){
-            console.log('caiu no watch do detail', this.detailsProject)
+
             if(this.detailsProject !== null){
                 this.projectDetails = this.detailsProject
             }
         }
     },
 
-    created(){
+    mounted(){
         
-        if(this.project === undefined || this.project.id === null){
+        if(this.project === undefined || this.project.id === undefined){
             this.$router.replace('/')
+            return
         }
         
         this.$store.dispatch('loadMainListTasks', {projectId: this.project.id })
