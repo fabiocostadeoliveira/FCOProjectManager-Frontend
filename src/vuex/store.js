@@ -18,7 +18,9 @@ export default new Vuex.Store({
 
         mainListProjects: [],
 
-        mainListTasks: []
+        mainListTasks: [],
+
+        detailsProject: {}
     },
 
 
@@ -46,6 +48,10 @@ export default new Vuex.Store({
 
         setMainListTasks(state, payload){
             state.mainListTasks = payload
+        },
+
+        setDetailsProject(state, payload){
+            state.detailsProject = payload
         }
 
     },
@@ -62,7 +68,9 @@ export default new Vuex.Store({
 
         mainListProjects: state => state.mainListProjects,
 
-        mainListTasks: state => state.mainListTasks
+        mainListTasks: state => state.mainListTasks,
+
+        detailsProject: state => state.detailsProject,
 
     },
 
@@ -96,10 +104,22 @@ export default new Vuex.Store({
                     projectId: payload.projectId 
                 }
             }
-            axios.get('/tasks/byProject', queryParams ).then((response) =>{
-                console.log('dentro da action', response.data)
-                commit('setMainListTasks', response.data)
-            })
+
+            axios.get('/projects/details', queryParams)
+                .then((response) => {
+                    
+                    let {data} = response || {}
+                    
+                    console.log('carregou details', data)
+
+                    commit('setDetailsProject', data)
+                })
+            
+            axios.get('/tasks/byProject', queryParams )
+                .then((response) =>{
+                    
+                    commit('setMainListTasks', response.data)
+                })
         }
     }
 

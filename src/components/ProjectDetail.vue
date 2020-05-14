@@ -4,9 +4,9 @@
 		<div id="headerProject">
 			<md-content class="md-card md-theme-default md-with-hover">
 				<div class="contentDetails">
-					<li> Percentual completo: {{ value.completedPercent }} %</li>
-					<li> Total de tarefas: {{ value.total }}</li>
-					<li> Atrasado: {{ value.isLate | formatIsLate }}</li>
+					<li> Percentual completo: {{ value.completedPercentage }} %</li>
+					<li> Total de tarefas: {{ value.totalTasks }}</li>
+					<li> Atrasado: {{ value.willBeLate | formatIsLate }}</li>
 				</div>
 			</md-content>
 		</div>

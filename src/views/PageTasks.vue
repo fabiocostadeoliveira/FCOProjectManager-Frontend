@@ -138,9 +138,9 @@ export default {
         showModalConfirmDelete: false,
 
         projectDetails:{
-            completedPercent: 10,
-            total:50,
-            isLate: true
+            completedPercent: 0,
+            total:0,
+            isLate: false
         },
 
         objEdit:{
@@ -184,6 +184,26 @@ export default {
                 this.idTaskToDelete = null
             }
         },
+
+        /*
+        loadProjectDetails(){
+
+            let queryParams = {
+                params: {
+                    projectId: this.project.id
+                }
+            }
+
+            this.$http.get('/projects/details', queryParams)
+                .then((response) => {
+
+                    let {data} = response.data || {}
+
+                    this.projectDetails = data;
+                })
+
+        },
+        */
 
         newObjTaskToUpdate(id, name, startDate, endDate, isFinished){
             
@@ -232,7 +252,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters(['mainListTasks']),
+        ...mapGetters(['mainListTasks', 'detailsProject']),
 
         descriptionSearch(){
 
@@ -254,6 +274,13 @@ export default {
         mainListTasks(){
             if(this.mainListTasks !== null ){
                 this.searched = this.mainListTasks
+            }
+        },
+
+        detailsProject(){
+            console.log('caiu no watch do detail', this.detailsProject)
+            if(this.detailsProject !== null){
+                this.projectDetails = this.detailsProject
             }
         }
     },
