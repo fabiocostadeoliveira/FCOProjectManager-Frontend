@@ -11,7 +11,8 @@
 			class="md-layout md-gutter">
 
 			<CardProject v-for=" (reg) of mainListProjects " :key="reg.id"
-						:value="reg" />
+						:value="reg"
+						:abbreviationName="true" />
 
 		</div>
 

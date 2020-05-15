@@ -5,10 +5,13 @@
         <div class="columnDetailProject">
             
             <CardProject
+                id="cardProjectBoard"
                 :value="project"
-                :disableActiveButtons="true"/>
+                :disableActiveButtons="true"                
+                :styleBoard="{width: '98%', paddingBottom: '5px', minWwidth:'40%' }"/>
             
             <ProjectDetail
+                id="projectDetailBoard"
                 :value="projectDetails"/>
         </div>
 
@@ -213,7 +216,6 @@ export default {
 
         onEdit(item){
             
-            console.log('item para edit', item)
             this.objEdit = this.newObjTaskToUpdate(item.id, item.name, item.startDate, item.endDate, item.finished)
 
             this.alternateDialogTaskHandle()
@@ -242,6 +244,11 @@ export default {
             let description = this.search === "" && this.searched.length === 0 ? "" : `Não encontrou resultados para "${this.search}"'`
 
             return description
+        },
+
+        styleBoard(){
+            return this.st
+                
         }
     },
 
@@ -278,8 +285,8 @@ export default {
         
         this.$store.dispatch('loadMainListTasks', {projectId: this.project.id })
     }
-
 }
+
 </script>
 
 <style >
@@ -302,13 +309,25 @@ export default {
 
     
     .actionsButtons{    
-
         width: 100px;
         padding-left: 0;
         padding-right: 0;
         margin-left: 0;
         margin-right: 0;
-        
     }
+
+    @media only screen and (max-width: 730px) {
+
+        .columnDetailProject{
+            display: flex;
+            flex-direction: column;
+        }
+
+        .md-card{
+            width: 100%;
+            background-color: red;
+        }
+       
+    }    
 
 </style>

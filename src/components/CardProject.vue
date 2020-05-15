@@ -1,12 +1,15 @@
 <template>
     <div class="md-layout-item">
         
-        <md-card md-with-hover >
+        <md-card
+             id="cardInfoProject" 
+            :style="styleBoard"
+             md-with-hover >
 
             <div @click="onClickCard">
                 <md-ripple>
                     <md-card-header>
-                        <div class="md-title">{{ value.name | mainTitle | capitalize }}  </div>
+                        <div class="md-title">{{ value.name | mainTitle(abbreviationName) | capitalize }}  </div>
                         <br/>
                     </md-card-header>
 
@@ -68,13 +71,22 @@ export default {
     props: {
         value: {
             type: Object,
-            //required: true
             default: () =>({})
         },
 
         disableActiveButtons:{
             type: Boolean,
             default: () =>(false)
+        },
+
+        styleBoard: {
+            type: Object,
+            default: () => ({})
+        },
+
+        abbreviationName:{
+            type: Boolean,
+            default: () => (false)
         }
 
     },
@@ -155,17 +167,18 @@ export default {
                 return    
             }            
 
-            
             this.$router.push({ name: 'pageTasks', params: {project: this.value }})
         }
     },
 
     filters:{
     
-        mainTitle(text){
+        mainTitle(text, abbreviationName){
             
+            if (!abbreviationName)
+                return text
+
             const maxLength = 20
-            
             
             if(text === undefined) return ''
 
@@ -185,11 +198,9 @@ export default {
             
             return value.charAt(0).toUpperCase() + value.slice(1)
         }
-
-
-    }
-
+    },
 }
+
 </script>
 
 <style>
@@ -211,6 +222,15 @@ export default {
     .md-theme-default .md-dialog-container{
         transform: none;
         transition: none; 
+    }
+
+    /* .md-card #cardInfoProject {
+        background-color: red;
+    } */
+
+    .editingTasks{
+        width: 98%;
+        padding-bottom: 5px;
     }
 
 </style>
