@@ -95,7 +95,7 @@ import {mapGetters, mapMutations} from 'vuex'
 import ProjectDetail from '../components/ProjectDetail'
 import CardProject from '../components/CardProject'
 import TaskHandle from '../components/TaskHandler'
-import Task from '../components/Task'
+
 
 
 const toLower = text => {
@@ -112,8 +112,7 @@ const searchByName = (items, term) => {
 
 export default {
     name: 'PageTasks',
-    components: {
-        Task,
+    components: {        
         ProjectDetail,
         CardProject,
         TaskHandle
