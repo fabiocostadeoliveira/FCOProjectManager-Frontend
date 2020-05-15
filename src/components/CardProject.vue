@@ -224,10 +224,6 @@ export default {
         transition: none; 
     }
 
-    /* .md-card #cardInfoProject {
-        background-color: red;
-    } */
-
     .editingTasks{
         width: 98%;
         padding-bottom: 5px;

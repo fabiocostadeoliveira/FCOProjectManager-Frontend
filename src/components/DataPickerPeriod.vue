@@ -56,10 +56,7 @@ export default {
         
         disableDatesEndDate(currentDate){
             return currentDate < this.value.startDate ? true : false
-            //return currentDate < this.value.startDate ? true : false
         },
-
-
 
         setUpEndDate(){
 

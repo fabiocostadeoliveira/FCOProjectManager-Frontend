@@ -160,8 +160,6 @@ export default {
 
             this.value.name = ''
 
-            //this.value.idProject = null,
-
             this.$set(this.value.period,'startDate', null)
 
             this.$set(this.value.period,'endDate', null)
