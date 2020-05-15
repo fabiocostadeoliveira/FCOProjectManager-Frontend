@@ -18,6 +18,8 @@ Para executar o projeto, voce deve clonar o mesmo e executar o docker-compose.ym
 $ docker-compose up
 ```
 
+> Obs: O banco de dados, foi utilizado o H2 somente para testes, sendo assim se aplicação foi derrubada os dados não irão persistir
+
 ### Endereço de acesso:
 A aplicação pode ser acessada via browser nos seguintes endereços:
 
